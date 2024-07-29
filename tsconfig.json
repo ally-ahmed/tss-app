@@ -27,7 +27,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"]
-    }
+    },
+    "types": ["vite/client"]
   },
   "include": [
     ".eslintrc.cjs",
