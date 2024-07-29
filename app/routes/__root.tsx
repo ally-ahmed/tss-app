@@ -1,15 +1,31 @@
+import { seo } from '@/lib/seo'
 import '@/styles/globals.css'
 import appCss from '@/styles/globals.css?url'
+import type { QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools/production'
 import {
-  createRootRoute,
   Outlet,
   ScrollRestoration,
+  createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
-export const Route = createRootRoute({
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === 'production'
+    ? () => null // Render nothing in production
+    : React.lazy(() =>
+        // Lazy load in development
+        import('@tanstack/router-devtools').then((res) => ({
+          default: res.TanStackRouterDevtools,
+          // For Embedded Mode
+          // default: res.TanStackRouterDevtoolsPanel
+        })),
+      )
+
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+}>()({
   meta: () => [
     {
       charSet: 'utf-8',
@@ -18,9 +34,10 @@ export const Route = createRootRoute({
       name: 'viewport',
       content: 'width=device-width, initial-scale=1',
     },
-    {
-      title: 'TanStack Start Starter',
-    },
+    ...seo({
+      title: 'Create TSS App',
+      description: 'TanStack Start Starter Project',
+    }),
   ],
   links: () => [{ rel: 'stylesheet', href: appCss }],
   component: RootComponent,
@@ -43,6 +60,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <Body>
         {children}
         <ScrollRestoration />
+        <ReactQueryDevtools buttonPosition="bottom-left" />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </Body>
