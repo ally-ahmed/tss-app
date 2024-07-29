@@ -2,7 +2,7 @@ import { seo } from '@/lib/seo'
 import '@/styles/globals.css'
 import appCss from '@/styles/globals.css?url'
 import type { QueryClient } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools/production'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   Outlet,
   ScrollRestoration,
