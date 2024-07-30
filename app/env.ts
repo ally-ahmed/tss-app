@@ -26,11 +26,11 @@ export const env = createEnv({
    * The prefix that client-side variables must have. This is enforced both at
    * a type-level and at runtime.
    */
-  clientPrefix: 'PUBLIC_',
+  clientPrefix: 'VITE_',
 
   client: {
     // PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
-    PUBLIC_NODE_ENV: z
+    VITE_NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),
   },
@@ -39,12 +39,7 @@ export const env = createEnv({
    * What object holds the environment variables at runtime. This is usually
    * `process.env` or `import.meta.env`.
    */
-  runtimeEnv: {
-    DATABASE_URL: process.env.DATABASE_URL,
-    NODE_ENV: process.env.NODE_ENV,
-    DATABASE_CONNECTION_TYPE: process.env.DATABASE_CONNECTION_TYPE,
-    DATABASE_AUTH_TOKEN: process.env.DATABASE_AUTH_TOKEN,
-  },
+  runtimeEnv: process.env,
 
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
