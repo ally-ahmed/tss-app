@@ -39,7 +39,12 @@ export const env = createEnv({
    * What object holds the environment variables at runtime. This is usually
    * `process.env` or `import.meta.env`.
    */
-  runtimeEnv: process.env,
+  runtimeEnv: {
+    DATABASE_URL: process.env.DATABASE_URL,
+    NODE_ENV: process.env.NODE_ENV,
+    DATABASE_CONNECTION_TYPE: process.env.DATABASE_CONNECTION_TYPE,
+    DATABASE_AUTH_TOKEN: process.env.DATABASE_AUTH_TOKEN,
+  },
 
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
