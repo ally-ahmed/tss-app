@@ -30,9 +30,9 @@ export const env = createEnv({
 
   client: {
     // PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
-    VITE_NODE_ENV: z
-      .enum(['development', 'test', 'production'])
-      .default('development'),
+    // VITE_NODE_ENV: z
+    //   .enum(['development', 'test', 'production'])
+    //   .default('development'),
   },
 
   /**
