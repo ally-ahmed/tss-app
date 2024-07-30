@@ -27,8 +27,9 @@ DATABASE_AUTH_TOKEN=""
 - ✅ tailwindcss + shadcn
 - ✅ Add seo util
 - ✅ add react query
+- ✅ Drizzle + Turso + Trpc + env.ts
+- 🚧 UI functionality
 - 🚧 setup Eslint + Prettier
-- 🚧 Drizzle + Turso + Trpc + env.ts
 - 🚧 Set usememo on routes to avoid double renders
 - 🚧 Dockerize
 
