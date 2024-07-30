@@ -10,9 +10,10 @@ import {
 } from '@tanstack/react-router'
 import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
+import { env } from '@/env'
 
 const TanStackRouterDevtools =
-  process.env.NODE_ENV === 'production'
+  env.NODE_ENV === 'production'
     ? () => null // Render nothing in production
     : React.lazy(() =>
         // Lazy load in development
