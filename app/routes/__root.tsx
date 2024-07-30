@@ -13,7 +13,7 @@ import * as React from 'react'
 import { env } from '@/env'
 
 const TanStackRouterDevtools =
-  env.NODE_ENV === 'production'
+  env.PUBLIC_NODE_ENV === 'production'
     ? () => null // Render nothing in production
     : React.lazy(() =>
         // Lazy load in development

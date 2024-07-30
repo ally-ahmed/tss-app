@@ -21,6 +21,7 @@ export const serverFnProcedure = t.procedure.experimental_caller(
     createContext,
   }),
 )
+export const publicAction = serverFnProcedure
 
 /**
  * Lib code

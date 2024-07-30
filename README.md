@@ -1,4 +1,26 @@
 
+## Create Turso DB
+[Turso Quickstart (TypeScript / JS)](https://docs.turso.tech/sdk/ts/quickstart)
+
+Create database in US east
+```bash
+    turso db create <database-name> --location iad
+```
+Get the database URL:
+```
+    turso db show --url <database-name>
+```
+Get the database authentication token:
+```
+    turso db tokens create <database-name>
+```
+```txt
+#.env
+# Drizzle
+DATABASE_URL=""
+DATABASE_CONNECTION_TYPE=""
+DATABASE_AUTH_TOKEN=""
+```
 #### TODO
 - ✅ Get counter demo app 
 - ✅ Deploy to vercel
@@ -77,3 +99,8 @@ export function createRouter() {
 }
 ```
 IDE error on routerWIthQueryClient
+
+
+http://localhost:3000/_server/?_serverFnId=/Users/norbix/dev/tss-app/app/routes/index.tsx?tsr-split&_serverFnName=$$function1
+
+- hono router https://github.com/orgs/honojs/discussions/2606
