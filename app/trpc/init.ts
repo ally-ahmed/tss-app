@@ -7,13 +7,16 @@ import type {
   MaybePromise,
   Simplify,
 } from '@trpc/server/unstable-core-do-not-import'
+import superjson from 'superjson'
 
 const createContext = () => ({
   // TODO
   foo: 'bar',
 })
 
-const t = initTRPC.context<typeof createContext>().create()
+const t = initTRPC.context<typeof createContext>().create({
+  transformer: superjson,
+})
 
 export const serverFnProcedure = t.procedure.experimental_caller(
   tssCaller({

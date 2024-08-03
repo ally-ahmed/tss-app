@@ -1,6 +1,5 @@
 import { db } from '@/db/client'
 import { Post } from '@/db/schema'
-
 interface JSONPlaceholderAuthor {
   id: string
   name: string
@@ -14,6 +13,7 @@ interface JSONPlaceholderPost {
 }
 
 export async function seed() {
+  console.log('Seeding...')
   const authors = await fetch(
     'https://jsonplaceholder.typicode.com/users',
   ).then((r) => r.json() as Promise<JSONPlaceholderAuthor[]>)
@@ -24,7 +24,7 @@ export async function seed() {
     .then((posts) => {
       return db.insert(Post).values(
         posts.map((post) => ({
-          author: authors.find((a) => a.id === post.userId)?.name,
+          author: authors.find((a) => a.id === post.userId)?.name ?? 'John Doe',
           title: post.title,
           body: post.body,
         })),

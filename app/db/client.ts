@@ -7,13 +7,13 @@ import { env } from '@/env'
 import * as schema from './schema'
 
 const options = {
-  local: { url: 'file:local.sqlite' },
+  local: { url: 'file:db.sqlite' },
   remote: {
     url: env.DATABASE_URL,
     authToken: env.DATABASE_AUTH_TOKEN,
   },
   'local-replica': {
-    url: 'file:local.sqlite',
+    url: 'file:db.sqlite',
     syncUrl: env.DATABASE_URL,
     authToken: env.DATABASE_AUTH_TOKEN,
   },

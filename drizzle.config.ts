@@ -4,7 +4,7 @@ import { env } from '@/env'
 
 export default {
   schema: './app/db/schema/index.ts',
-  out: './src/server/db/migrations',
+  out: './app/db/migrations',
   dialect: 'sqlite',
   driver: 'turso',
   dbCredentials: {

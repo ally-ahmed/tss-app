@@ -1,4 +1,6 @@
+import { Toaster } from '@/components/ui/sonner'
 import { seo } from '@/lib/seo'
+import { cn } from '@/lib/utils'
 import '@/styles/globals.css'
 import appCss from '@/styles/globals.css?url'
 import type { QueryClient } from '@tanstack/react-query'
@@ -10,7 +12,6 @@ import {
 } from '@tanstack/react-router'
 import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
-import { env } from '@/env'
 
 const TanStackRouterDevtools = import.meta.env.PROD
   ? () => null // Render nothing in production
@@ -56,8 +57,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <Head>
         <Meta />
       </Head>
-      <Body>
+      <Body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          // fontSans.variable,
+          // fontHeading.variable,
+        )}
+      >
         {children}
+        <Toaster />
         <ScrollRestoration />
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <TanStackRouterDevtools position="bottom-right" />
