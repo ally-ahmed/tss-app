@@ -1,14 +1,13 @@
 import { db } from '@/db/client'
 import { Post } from '@/db/schema'
 import { CreatePostSchema } from '@/db/schema/post'
-import { env } from '@/env'
 import { publicAction } from '@/trpc/init'
 import { notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
-const PRIVATE_VARIABLE = env.DATABASE_CONNECTION_TYPE
+const PRIVATE_VARIABLE = 'DATABASE_CONNECTION_TYPE'
 
 export const byId = createServerFn(
   'GET',
