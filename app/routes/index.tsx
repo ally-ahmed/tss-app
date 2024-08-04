@@ -110,15 +110,21 @@ function Post({ title, body, author, id }: PostProps) {
 function PostList({ posts }: { posts: PostType[] }) {
   return (
     <div className="flex flex-col gap-y-4 w-full max-w-3xl">
-      {posts.map((post, index) => (
-        <Post
-          key={index}
-          title={post.title}
-          body={post.body}
-          author={post.author}
-          id={post.id}
-        />
-      ))}
+      {posts.length > 0 ? (
+        posts.map((post, index) => (
+          <Post
+            key={index}
+            title={post.title}
+            body={post.body}
+            author={post.author}
+            id={post.id}
+          />
+        ))
+      ) : (
+        <h3 className="pt-8 text-muted-foreground text-2xl text-center font-semibold">
+          No posts yet
+        </h3>
+      )}
     </div>
   )
 }
