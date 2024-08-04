@@ -37,9 +37,7 @@ DATABASE_AUTH_TOKEN=""
 - 🚧 serverFunction
 
 ### Next Time TODO
-- Move hooks to a separate folder and file check start-trellaux and set actions to server only maybe also trpc/init
 - remove super JSON, I don't thin we need it at the moment
-- Add loading state for post list
 - Add font
 - Add auth
 - Read up on preload and navigation
@@ -53,6 +51,7 @@ DATABASE_AUTH_TOKEN=""
   https://discord.com/channels/719702312431386674/1007702008448426065/1260562722408628336
   https://github.com/TanStack/router/issues/182
 #### Questions
+- Do we ned a loading state for post list? 
 - Why do we need to set in router.tsx
 ```
  defaultErrorComponent: DefaultCatchBoundary,
