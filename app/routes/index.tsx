@@ -95,10 +95,10 @@ function Post({ title, body, author, id }: PostProps) {
 function PostList({ posts }: { posts: PostType[] }) {
   return (
     <div className="flex flex-col gap-y-4 w-full max-w-3xl">
-      {posts.map((post) => (
+      {posts.map((post, index) => (
         // Optimistic update so id is not known. This is throwing an error
         <Post
-          key={post.id}
+          key={index}
           title={post.title}
           body={post.body}
           author={post.author}
