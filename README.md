@@ -35,7 +35,7 @@ DATABASE_AUTH_TOKEN=""
 - 🚧 Dockerize
 ### next time
 - remove super JSON
-- deploy changes.
+- Error when creating a new post because of missing id in optimistic update
 - Add min width to cards
 - Add gradient and logo to Create Tss app
 - Add loading state for post list
