@@ -32,16 +32,17 @@ DATABASE_AUTH_TOKEN=""
 - 🚧 UI functionality
 - 🚧 setup Eslint + Prettier
 - 🚧 Set usememo on routes to avoid double renders need to confirm if this fixed or not
-- 🚧 Dockerize
-### next time
-- remove super JSON
-- Error when creating a new post because of missing id in optimistic update
-- Add min width to cards
+- 🚧 Test hosting on Cloudflare
+- 🚧 Dockerize so that can host anywhere
+- 🚧 serverFunction
+
+### Next Time TODO
+- Move hooks to a separate folder and file check start-trellaux and set actions to server only maybe also trpc/init
+- remove super JSON, I don't thin we need it a the moment
 - Add gradient and logo to Create Tss app
 - Add loading state for post list
 - Add font
 - Add auth
-- Move hooks to a separate folder and file check start-trellaux
 - Read up on preload and navigation
 
 ### Gotchas

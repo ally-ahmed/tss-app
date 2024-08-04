@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { CreatePostSchema, PostType } from '@/db/schema/post'
+import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -40,13 +41,27 @@ export const Route = createFileRoute('/')({
 function Home() {
   const posts = useSuspenseQuery(listPostQuery())
   console.log('home index.tsx')
+  const gradients = [
+    `from-rose-500 to-yellow-500`,
+    `from-yellow-500 to-teal-500`,
+    `from-teal-500 to-violet-500`,
+    `from-blue-500 to-pink-500`,
+  ]
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         <section id="open-source" className="container py-8 md:py-12 lg:py-12">
           <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4">
             <h2 className="text-3xl leading-[1.1] sm:text-3xl md:text-6xl tracking-tight font-extrabold">
-              Create TSS App 🏝️
+              <span
+                className={cn(
+                  'text-transparent bg-clip-text bg-gradient-to-r',
+                  gradients[Math.floor(Math.random() * gradients.length)],
+                )}
+              >
+                Create TSS App
+              </span>{' '}
+              🏝️
             </h2>
             <PostForm />
             <PostList posts={posts.data as PostType[]} />
@@ -96,7 +111,6 @@ function PostList({ posts }: { posts: PostType[] }) {
   return (
     <div className="flex flex-col gap-y-4 w-full max-w-3xl">
       {posts.map((post, index) => (
-        // Optimistic update so id is not known. This is throwing an error
         <Post
           key={index}
           title={post.title}
