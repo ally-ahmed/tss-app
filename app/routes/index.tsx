@@ -1,8 +1,3 @@
-import {
-  listPostQuery,
-  useCreatePostMutation,
-  useDeletePostMutation,
-} from '@/actions/posts'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -21,6 +16,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { CreatePostSchema, PostType } from '@/db/schema/post'
+import {
+  listPostQuery,
+  useCreatePostMutation,
+  useDeletePostMutation,
+} from '@/hooks/post'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSuspenseQuery } from '@tanstack/react-query'

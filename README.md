@@ -38,8 +38,7 @@ DATABASE_AUTH_TOKEN=""
 
 ### Next Time TODO
 - Move hooks to a separate folder and file check start-trellaux and set actions to server only maybe also trpc/init
-- remove super JSON, I don't thin we need it a the moment
-- Add gradient and logo to Create Tss app
+- remove super JSON, I don't thin we need it at the moment
 - Add loading state for post list
 - Add font
 - Add auth
@@ -115,5 +114,4 @@ export function createRouter() {
   return router
 }
 ```
-- hono router https://github.com/orgs/honojs/discussions/2606
-- for delete mutation toast is not working on component had to move it to hook but toast works for creation ???
+- hono router https://github.com/orgs/honojs/discussions/2606 for callback url routing or just any API endpoints accessed from outside the app.
