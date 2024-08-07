@@ -51,6 +51,7 @@ DATABASE_AUTH_TOKEN=""
   https://discord.com/channels/719702312431386674/1007702008448426065/1260562722408628336
   https://github.com/TanStack/router/issues/182
 #### Questions
+- Is there a risk of leaking data/functions definitions from the server to the client? Looking at the source in the browser of the deployed application I am not seeing any leaks.
 - Do we ned a loading state for post list? 
 - Why do we need to set in router.tsx
 ```
