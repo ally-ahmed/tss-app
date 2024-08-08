@@ -1,10 +1,18 @@
-import { eventHandler, getRequestURL } from "vinxi/http";
+import { createRouter, defineEventHandler } from "vinxi/http";
 
-export default eventHandler(async (event) => {
-  const url = getRequestURL(event)
-  console.log("API ENDPOINT", url)
-  if (url.pathname.includes("callback/github")) {
-    
-  }
-  return Response.json({ message: "Hello World" })
-});
+
+const router = createRouter();
+router.get(
+  "/",
+  defineEventHandler((event) => {
+    return { message: "Tadaa!" };
+  }),
+);
+router.get(
+  "/callback/github",
+  defineEventHandler((event) => {
+    return { message: "Github Callback!" };
+  }),
+)
+
+export default router.handler
