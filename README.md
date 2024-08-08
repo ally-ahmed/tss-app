@@ -1,3 +1,7 @@
+## Features
+- TRPC
+- Shadcn
+- API routes for callback URLs and webhooks
 
 ## Create Turso DB
 [Turso Quickstart (TypeScript / JS)](https://docs.turso.tech/sdk/ts/quickstart)
