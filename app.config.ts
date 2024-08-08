@@ -9,4 +9,10 @@ export default defineConfig({
       }),
     ],
   },
+}).addRouter({
+  name: 'api',
+  type: 'http',
+  base: '/api',
+  target: 'server',
+  handler: 'app/api/index.ts',
 })
