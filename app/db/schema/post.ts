@@ -1,6 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
+import { genId } from '@/lib/utils'
 import { relations, sql } from 'drizzle-orm'
 import { index, int, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
@@ -10,7 +11,10 @@ import { SelectUserSchema, User } from './auth'
 export const Post = sqliteTable(
   'post',
   {
-    id: int('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+    id: text('id')
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => genId()),
     title: text('name', { length: 256 }).notNull(),
     body: text('body').notNull(),
     userId: text('user_id', { length: 255 })
