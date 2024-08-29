@@ -23,27 +23,27 @@ export const useCreatePostMutation = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: postActions.create,
-    onMutate: async (newPost: CreatePost) => {
-      // Cancel any outgoing refetches
-      // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: ['posts'] })
-      // Snapshot the previous value
-      const previousPosts = queryClient.getQueryData(['posts'])
+    // onMutate: async (newPost: CreatePost) => {
+    //   // Cancel any outgoing refetches
+    //   // (so they don't overwrite our optimistic update)
+    //   await queryClient.cancelQueries({ queryKey: ['posts'] })
+    //   // Snapshot the previous value
+    //   const previousPosts = queryClient.getQueryData(['posts'])
 
-      // Optimistically update to the new value
-      queryClient.setQueryData(['posts'], (old: PostType[]) => [
-        newPost,
-        ...old,
-      ])
+    //   // Optimistically update to the new value
+    //   queryClient.setQueryData(['posts'], (old: PostType[]) => [
+    //     newPost,
+    //     ...old,
+    //   ])
 
-      // Return a context object with the snapshotted value
-      return { previousPosts }
-    },
+    //   // Return a context object with the snapshotted value
+    //   return { previousPosts }
+    // },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
-    onError: (err, newPost, context) => {
-      queryClient.setQueryData(['posts'], context?.previousPosts)
-    },
+    // onError: (err, newPost, context) => {
+    //   queryClient.setQueryData(['posts'], context?.previousPosts)
+    // },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })

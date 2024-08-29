@@ -1,4 +1,5 @@
 import { defineConfig } from '@tanstack/start/config'
+
 import tsConfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
@@ -15,4 +16,9 @@ export default defineConfig({
   base: '/api',
   target: 'server',
   handler: 'app/api/index.ts',
+  plugins: () => [
+    tsConfigPaths({
+      projects: ['./tsconfig.json'],
+    }),
+  ],
 })

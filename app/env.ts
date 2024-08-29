@@ -19,6 +19,8 @@ export const env = createEnv({
           ? s && s.length > 0
           : true
       }),
+    GITHUB_CLIENT_ID: z.string().optional().default(''),
+    GITHUB_CLIENT_SECRET: z.string().optional().default(''),
   },
 
   /**

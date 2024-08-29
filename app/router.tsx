@@ -25,6 +25,7 @@ export function createRouter() {
     },
   })
   const router = routerWithQueryClient(
+    // TODO - fix this
     // @ts-ignore-next-line
     createTanStackRouter({
       routeTree,

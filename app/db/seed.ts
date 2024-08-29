@@ -1,5 +1,5 @@
 import { db } from '@/db/client'
-import { Post } from '@/db/schema'
+import { Post } from '@/db/schema/post'
 interface JSONPlaceholderAuthor {
   id: string
   name: string
@@ -22,13 +22,14 @@ export async function seed() {
     .then((r) => r.json() as Promise<JSONPlaceholderPost[]>)
     .then((posts) => posts.slice(0, 10))
     .then((posts) => {
-      return db.insert(Post).values(
-        posts.map((post) => ({
-          author: authors.find((a) => a.id === post.userId)?.name ?? 'John Doe',
-          title: post.title,
-          body: post.body,
-        })),
-      )
+      // TODO update seed to include user
+      // return db.insert(Post).values(
+      //   posts.map((post) => ({
+      //     author: authors.find((a) => a.id === post.userId)?.name ?? 'John Doe',
+      //     title: post.title,
+      //     body: post.body,
+      //   })),
+      // )
     })
 }
 

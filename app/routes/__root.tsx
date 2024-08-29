@@ -1,4 +1,5 @@
 import { Toaster } from '@/components/ui/sonner'
+import ogImage from '@/images/og.png'
 import { seo } from '@/lib/seo'
 import { cn } from '@/lib/utils'
 import '@/styles/globals.css'
@@ -37,6 +38,9 @@ export const Route = createRootRouteWithContext<{
     ...seo({
       title: 'Create TSS App',
       description: 'TanStack Start Starter Project',
+      image: ogImage,
+      keywords:
+        'tanstack start,tanstack,react,reactjs,react query,open source,open source software,oss,software',
     }),
   ],
   links: () => [{ rel: 'stylesheet', href: appCss }],
@@ -63,6 +67,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           // fontSans.variable,
           // fontHeading.variable,
         )}
+        suppressHydrationWarning
       >
         {children}
         <Toaster />

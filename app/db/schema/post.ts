@@ -1,11 +1,11 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import type { InferSelectModel } from 'drizzle-orm'
-import { sql } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import { index, int, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { createInsertSchema } from 'drizzle-zod'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
+import { SelectUserSchema, User } from './auth'
 
 export const Post = sqliteTable(
   'post',
@@ -13,7 +13,9 @@ export const Post = sqliteTable(
     id: int('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
     title: text('name', { length: 256 }).notNull(),
     body: text('body').notNull(),
-    author: text('author', { length: 256 }).notNull(),
+    userId: text('user_id', { length: 255 })
+      .notNull()
+      .references(() => User.id),
     createdAt: int('created_at', { mode: 'timestamp' })
       .default(sql`(unixepoch())`)
       .notNull(),
@@ -25,7 +27,22 @@ export const Post = sqliteTable(
     titleIndex: index('title_idx').on(post.title),
   }),
 )
-export type PostType = InferSelectModel<typeof Post>
+
+export const UserRelations = relations(User, ({ many }) => ({
+  posts: many(Post),
+}))
+
+export const PostsRelations = relations(Post, ({ one }) => ({
+  user: one(User, { fields: [Post.userId], references: [User.id] }),
+}))
+
+const PostSelectSchema = createSelectSchema(Post)
+  .omit({ userId: true, createdAt: true, updatedAt: true })
+  .extend({
+    user: SelectUserSchema,
+  })
+export type PostType = z.infer<typeof PostSelectSchema>
+
 export const CreatePostSchema = createInsertSchema(Post, {
   title: z
     .string({ required_error: 'Title is required.' })
