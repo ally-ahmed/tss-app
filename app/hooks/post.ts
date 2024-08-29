@@ -58,7 +58,7 @@ export const useDeletePostMutation = () => {
       await queryClient.cancelQueries({ queryKey: ['posts'] })
       const previousPosts = queryClient.getQueryData(['posts'])
       queryClient.setQueryData(['posts'], (old: PostType[]) =>
-        old.filter((p) => p.id !== postId),
+        old.filter((p) => p.id !== postId.toString()),
       )
       return { previousPosts }
     },

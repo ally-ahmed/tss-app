@@ -21,6 +21,7 @@ interface GitHubUser {
   name?: string;
   avatar_url?: string;
   login: string;
+  verified: boolean;
 }
 
 router.get(
@@ -51,11 +52,8 @@ router.get(
       },
     });
     const githubUserProfile = (await userProfile.json()) as GitHubUser;
-    console.log(`GitHub user: ${JSON.stringify(githubUserProfile)}`);
     // console.log(`GitHub user: ${JSON.stringify(githubUserProfile)}`);
     //  email can be null if user has made it private.
-    //  TODO get emails https://api.github.com/user/emails
-    // TODO how do we verify the email
     const existingAccount = await db.query.OAuthAccount.findFirst({
       where: (fields) =>
         and(
@@ -74,6 +72,24 @@ router.get(
         headers
       });
     }
+    if (!githubUserProfile.email) {
+      const emailResponse = await fetch("https://api.github.com/user/emails", {
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken}`
+        }
+      });
+      const emails = await emailResponse.json();
+      // [{"email":"email1@test.com","primary":true,"verified":true,"visibility":"public"},{"email":"email2@test.com","primary":false,"verified":true,"visibility":null}]
+      const primaryEmail  = emails.find((email: { primary: boolean }) => email.primary);
+      // TODO how do we verify the email if not verified
+      if (primaryEmail) {
+        githubUserProfile.email = primaryEmail.email;
+        githubUserProfile.verified = primaryEmail.verified;
+      }else if (emails.length > 0) {
+        githubUserProfile.email = emails[0].email;
+        githubUserProfile.verified = emails[0].verified;
+      }
+    }
     // If no existing account check if the a user with the email exists and link the account.
     const newUser = await db.transaction(async (tx) => {
       const [newUser] = await tx
@@ -82,6 +98,7 @@ router.get(
           email: githubUserProfile.email,
           name: githubUserProfile.name || githubUserProfile.login,
           image: githubUserProfile.avatar_url,
+          emailVerified: githubUserProfile.verified,
         })
         .returning({
           id: User.id,
