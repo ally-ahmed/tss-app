@@ -88,6 +88,7 @@ export function useMutation<TVariables, TData, TError = Error>(
         router.navigate({ ...(ctx.data as any) })
       } else if (isRedirect(ctx.error)) {
         //   TODO better handle external redirects
+        //   TODO why is redirect returned as an error
         console.log('ctx.error', ctx.error)
         if (ctx.error?.to.includes('github.com')) {
           // Handle external redirects

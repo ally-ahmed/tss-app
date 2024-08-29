@@ -1,19 +1,11 @@
-"use server"
+import Headers from "@mjackson/headers";
+import { createAPIFileRoute } from "@tanstack/start/api";
+
 import { createSession, github, lucia } from "@/auth";
 import { db } from "@/db/client";
 import { OAuthAccount, User } from "@/db/schema";
-import Headers from "@mjackson/headers";
 import { OAuth2RequestError } from "arctic";
 import { and, eq } from "drizzle-orm";
-import { createRouter, defineEventHandler, getRequestURL, parseCookies } from "vinxi/http";
-
-const router = createRouter();
-router.get(
-  "/",
-  defineEventHandler((event) => {
-    return { message: "Tadaa!" };
-  }),
-);
 
 interface GitHubUser {
   id: number;
@@ -23,17 +15,15 @@ interface GitHubUser {
   login: string;
   verified: boolean;
 }
-
-router.get(
-  "/login/github/callback",
-  defineEventHandler(async (event) => {
-    'use server'
+export const Route = createAPIFileRoute('/api/auth/callback/github')({
+    GET: async ({request, params}) => {
     console.log("########## GitHub OAuth callback ##########");
-    const url = getRequestURL(event);
+    const url = new URL(request.url);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
-    const cookies = parseCookies(event) 
-    const storedState = cookies["github_oauth_state"] ?? null;
+    const headers = new Headers(request.headers)
+    const cookies = headers.cookie
+    const storedState = cookies.get("github_oauth_state")?? null;
     if (!code || !state || !storedState || state !== storedState) {
       console.error(
         `Invalid state or code in GitHub OAuth callback: ${JSON.stringify({ code, state, storedState })}`,
@@ -81,7 +71,7 @@ router.get(
       const emails = await emailResponse.json();
       // [{"email":"email1@test.com","primary":true,"verified":true,"visibility":"public"},{"email":"email2@test.com","primary":false,"verified":true,"visibility":null}]
       const primaryEmail  = emails.find((email: { primary: boolean }) => email.primary);
-      // TODO how do we verify the email if not verified
+      // TODO verify the email if not verified
       if (primaryEmail) {
         githubUserProfile.email = primaryEmail.email;
         githubUserProfile.verified = primaryEmail.verified;
@@ -142,7 +132,5 @@ router.get(
     });
   }
   // TODO: Handle error page
-  }),
-)
-
-export default router.handler;
+    }
+})

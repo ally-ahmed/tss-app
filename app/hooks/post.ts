@@ -54,6 +54,7 @@ export const useDeletePostMutation = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: postActions.remove,
+    // TODO why does this have to be a number?
     onMutate: async (postId: number) => {
       await queryClient.cancelQueries({ queryKey: ['posts'] })
       const previousPosts = queryClient.getQueryData(['posts'])
