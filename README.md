@@ -1,6 +1,6 @@
 # TSS App 🏝️
 
-Tanstart Start simple starter project.
+Tanstack Start simple starter project.
 
 
 ![App Screenshot](./app-screenshot.png)
