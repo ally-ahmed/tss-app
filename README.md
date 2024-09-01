@@ -24,7 +24,7 @@ Tanstack Start simple starter project.
  - [ethanniser drizzle config to handle local, remote, local-replica for libsql.](https://github.com/ethanniser/beth-b2b-saas/blob/main/src/db/primary/index.ts)
  - [create-t3-app I am sure I copied some stuff from here as well](https://github.com/t3-oss/create-t3-app)
  - [UI inspired by again the legend Julius's create-t3-turbo](https://github.com/t3-oss/create-t3-turbo)
-
+- [shadcn-ui/taxonomy](https://github.com/shadcn-ui/taxonomy/tree/651f984e52edd65d40ccd55e299c1baeea3ff017)
 
 ## Getting Started
 
