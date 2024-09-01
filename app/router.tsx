@@ -24,11 +24,10 @@ export function createRouter() {
       },
     },
   })
-  const router = routerWithQueryClient(
-    // TODO - fix this
-    // @ts-ignore-next-line
+  return routerWithQueryClient(
     createTanStackRouter({
       routeTree,
+      context: { queryClient },
       defaultPreload: 'intent',
       defaultErrorComponent: DefaultCatchBoundary,
       defaultNotFoundComponent: () => <NotFound />,
@@ -36,7 +35,6 @@ export function createRouter() {
     }),
     queryClient,
   )
-  return router
 }
 
 declare module '@tanstack/react-router' {

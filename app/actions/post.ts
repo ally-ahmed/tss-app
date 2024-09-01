@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 export const byId = createServerFn(
   'GET',
-  publicAction.input(z.number()).query(async ({ input: postId, ctx }) => {
+  publicAction.input(z.string()).query(async ({ input: postId, ctx }) => {
     console.log(`Fetching post with id ${postId}...`)
 
     const post = await ctx.db.query.Post.findFirst({
@@ -35,7 +35,7 @@ export const list = createServerFn(
 
 export const remove = createServerFn(
   'POST',
-  protectedAction.input(z.number()).mutation(async ({ input: postId, ctx }) => {
+  protectedAction.input(z.string()).mutation(async ({ input: postId, ctx }) => {
     console.log(`Deleting post with id ${postId}...`)
     const post = await ctx.db.query.Post.findFirst({
       where: (fields, { eq }) =>
