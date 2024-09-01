@@ -123,7 +123,7 @@ function Auth() {
     <>
       {!user ? (
         <Button
-          disabled={logInStatus === 'pending'}
+          disabled={logInStatus === 'pending' || isLoggingIn}
           onClick={async () => {
             setIsLoggingIn(true)
             await logInMutation()
