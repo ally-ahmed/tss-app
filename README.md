@@ -10,6 +10,7 @@ Tanstart Start simple starter project.
 
 - [Tanstack Start](https://tanstack.com/router/latest/docs/framework/react/guide/tanstack-start#tanstack-start)
 - [Tailwind CSS](https://tailwindcss.com)
+- [shadcn/ui](https://ui.shadcn.com/)
 - [tRPC](https://trpc.io)
 - [Drizzle](https://orm.drizzle.team)
 - [Lucia Auth - Adapters Removed RFC](https://github.com/lucia-auth/lucia/issues/1639)
