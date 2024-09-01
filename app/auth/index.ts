@@ -78,9 +78,6 @@ export const auth = async (sessionId: string | null) => {
   }
   const result = await lucia.validateSession(sessionId)
   let headers = new Headers()
-  console.log(
-    `########## result ${JSON.stringify(result.session?.expiresAt)} ##########`,
-  )
   if (
     result.session !== null &&
     Date.now() >= result.session.expiresAt.getTime()
