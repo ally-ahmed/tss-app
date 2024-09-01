@@ -139,7 +139,7 @@ function Auth() {
         </Button>
       ) : (
         <Button
-          disabled={logOutMutation.status === 'pending'}
+          disabled={logOutMutation.status === 'pending' || isLoggingOut}
           onClick={() => {
             setIsLoggingOut(true)
             logOutMutation.mutate()
