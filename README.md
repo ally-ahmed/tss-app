@@ -1,4 +1,4 @@
-# TSS App 
+# TSS App 🏝️
 
 Tanstart Start simple starter project.
 
