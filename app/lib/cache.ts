@@ -48,7 +48,7 @@ const defaultCacheOptions = {
 export function defineCachedFunction<T, ArgsT extends unknown[] = any[]>(
   fn: (...args: ArgsT) => T | Promise<T>,
   opts: CacheOptions<T> = {},
-): (...args: ArgsT) => Promise<T | undefined> {
+): (...args: ArgsT) => Promise<T> {
   opts = { ...defaultCacheOptions, ...opts }
 
   const pending: { [key: string]: Promise<T> } = {}
@@ -162,7 +162,7 @@ export function defineCachedFunction<T, ArgsT extends unknown[] = any[]>(
     if (opts.transform) {
       value = (await opts.transform(entry, ...args)) || value
     }
-    return value
+    return value as T
   }
 }
 function getKey(...args: unknown[]) {

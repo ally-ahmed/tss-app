@@ -7,9 +7,8 @@ import { generateSessionId, Lucia } from 'lucia'
 
 import { env } from '@/env'
 import type { DatabaseAdapter, SessionAndUser } from 'lucia'
-import { storage } from '../lib/cache'
-import { cachedFunction } from '../lib/cache'
 import { parseCookies, setCookie } from 'vinxi/http'
+import { cachedFunction } from '../lib/cache'
 
 const adapter: DatabaseAdapter<SessionType, UserType> = {
   getSessionAndUser: async (
@@ -67,38 +66,41 @@ export function createSession(userId: string): SessionType {
   return session
 }
 
-export const auth = async () => {
-  const sessionId = parseCookies()[lucia.sessionCookieName]
-  console.log(`########### calling auth ${sessionId} ###########`)
-  if (!sessionId) {
-    return {
-      user: null,
-      session: null,
+export const auth = cachedFunction(
+  async () => {
+    const sessionId = parseCookies()[lucia.sessionCookieName]
+    console.log(`########### calling auth ${sessionId} ###########`)
+    if (!sessionId) {
+      return {
+        user: null,
+        session: null,
+      }
     }
-  }
-  const result = await lucia.validateSession(sessionId)
-  if (
-    result.session !== null &&
-    Date.now() >= result.session.expiresAt.getTime()
-  ) {
-    const session = createSession(result.user.id)
-    const sessionCookie = lucia.createSessionCookie(
-      result.session.id,
-      session.expiresAt,
-    )
-    setCookie(sessionCookie.name, sessionCookie.value, {
-      ...sessionCookie.npmCookieOptions(),
-    })
-  }
-  if (!result.session) {
-    const sessionCookie = lucia.createBlankSessionCookie()
-    setCookie(sessionCookie.name, sessionCookie.value, {
-      ...sessionCookie.npmCookieOptions(),
-    })
-  }
-  return {
-    ...result,
-  }
-}
+    const result = await lucia.validateSession(sessionId)
+    if (
+      result.session !== null &&
+      Date.now() >= result.session.expiresAt.getTime()
+    ) {
+      const session = createSession(result.user.id)
+      const sessionCookie = lucia.createSessionCookie(
+        result.session.id,
+        session.expiresAt,
+      )
+      setCookie(sessionCookie.name, sessionCookie.value, {
+        ...sessionCookie.npmCookieOptions(),
+      })
+    }
+    if (!result.session) {
+      const sessionCookie = lucia.createBlankSessionCookie()
+      setCookie(sessionCookie.name, sessionCookie.value, {
+        ...sessionCookie.npmCookieOptions(),
+      })
+    }
+    return {
+      ...result,
+    }
+  },
+  { maxAge: 70 },
+)
 // export const authLoader = createServerFn('GET', async (_, { request }) => {})
 export type Auth = Awaited<ReturnType<typeof auth>>
