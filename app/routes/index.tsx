@@ -104,12 +104,14 @@ function Home() {
   )
 }
 function Auth() {
-  const [isRedirecting, setIsRedirecting] = React.useState(false)
+  const [isRedirectingToGithub, setIsRedirectingToGithub] =
+    React.useState(false)
+  const [isLogoutRedirect, setIsLogoutRedirect] = React.useState(false)
   const logInServerFn = useServerFn(logInWithGithub)
   const logInMutation = useMutation({
     mutationFn: () => logInServerFn(),
     onSuccess: (data) => {
-      setIsRedirecting(true)
+      setIsRedirectingToGithub(true)
       window.location.href = data.to
     },
     onError: (error) => {
@@ -122,7 +124,8 @@ function Auth() {
     mutationFn: () => logoutServerFn(),
     onError: (error) => {
       // TODO toast with error
-      // Redirect is still returning an error??
+      // Redirect is still returning an error even after using useServerFn??
+      setIsLogoutRedirect(true)
       // console.error('onError', error)
     },
   })
@@ -131,10 +134,10 @@ function Auth() {
     <>
       {!user ? (
         <Button
-          disabled={logInMutation.isPending || isRedirecting}
+          disabled={logInMutation.isPending || isRedirectingToGithub}
           onClick={() => logInMutation.mutate(undefined)}
         >
-          {logInMutation.isPending || isRedirecting ? (
+          {logInMutation.isPending || isRedirectingToGithub ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Github className="mr-2 h-4 w-4" />
@@ -143,7 +146,7 @@ function Auth() {
         </Button>
       ) : (
         <Button
-          disabled={logOutMutation.isPending}
+          disabled={logOutMutation.isPending || isLogoutRedirect}
           onClick={() => {
             logOutMutation.mutate(undefined)
           }}
