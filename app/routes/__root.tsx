@@ -44,6 +44,8 @@ export const Route = createRootRouteWithContext<{
     }),
   ],
   links: () => [
+    { rel: 'preconnect', href: 'https://rsms.me/' },
+    { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
     { rel: 'stylesheet', href: appCss },
     {
       rel: 'apple-touch-icon',
