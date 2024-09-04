@@ -11,9 +11,6 @@ dependencies:
   '@libsql/client':
     specifier: ^0.7.0
     version: 0.7.0
-  '@mjackson/headers':
-    specifier: ^0.6.1
-    version: 0.6.1
   '@radix-ui/react-avatar':
     specifier: ^1.1.0
     version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1)
@@ -2767,10 +2764,6 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
-    dev: false
-
-  /@mjackson/headers@0.6.1:
-    resolution: {integrity: sha512-ZxaHb7O/Z9m6pudXhArXMO9dcHp7OfCNtLsmsThtjBo4OfkzPKiC9z72FwFSAZXaU2Zza9bf1RgfTxCHiTuDvw==}
     dev: false
 
   /@neon-rs/load@0.0.4:
