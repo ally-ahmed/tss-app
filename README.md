@@ -85,34 +85,5 @@ and also a link to Route options
   links: () => [{ rel: 'stylesheet', href: appCss }],
 ```
 - useMutation hook considers a server function that return a redirect as an error so you get the result of the redirect in the error channel.
-- [mjackson/headers](https://github.com/mjackson/remix-the-web/tree/main/packages/headers) library with redirect doesn't set the cookie so the following doesn't work
-```ts
-const state = generateState()
-const url = await github.createAuthorizationURL(state, {
-    scopes: ['user:email'],
-})
-const headers = new Headers()
-headers.setCookie = new SetCookie({
-    name: 'github_oauth_state',
-    value: state,
-    path: '/',
-    secure: process.env.NODE_ENV === 'production' || undefined,
-    httpOnly: true,
-    maxAge: 60 * 10,
-    sameSite: 'Lax',
-})
-return redirect({
-    to: "/",
-    headers,
-})
-```
-instead I need to do
-```ts
-return redirect({
-    to: url.toString(),
-    headers: {
-        'Set-Cookie': headers.setCookie.toString(),
-    },
-})
 ```
 

@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-export const getPostQuery = (postId: number) =>
+export const getPostQuery = (postId: string) =>
   queryOptions({
     queryKey: ['post', postId],
     queryFn: () => postActions.byId(postId),
