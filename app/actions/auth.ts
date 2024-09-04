@@ -23,6 +23,7 @@ export const logout = createServerFn('POST', async (_, { request }) => {
   })
   return redirect({
     to: '/',
+    throw: false,
   })
 })
 export const logInWithGithub = createServerFn('POST', async () => {

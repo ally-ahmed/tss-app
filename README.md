@@ -63,12 +63,11 @@ To run this project, you will need to add the following environment variables to
 
 
 ## TODO
-
 - Cache auth validation
-
-- Maybe I don't need superjson
-
 - Custom fonts
+
+- Investigate if there is a way to return a redirect from the server function without it being an error and 
+it automatically does the redirect in the client. Tanner suggest `userServerFn` should work and it does for only URLs within the app but not external URL. So the `useServerFn` works for logout but not for Github login. And even with the logout it still goes throw the error channel
 
 - Maybe look at ESLint, Prettier or even jump ship and use biomejs
 
