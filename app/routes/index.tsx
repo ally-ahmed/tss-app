@@ -22,11 +22,11 @@ import {
   useCreatePostMutation,
   useDeletePostMutation,
 } from '@/hooks/post'
-import { useMutation } from '@/hooks/useMutation'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
+import { useServerFn } from '@tanstack/start'
 import { Github, Loader2, Trash } from 'lucide-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -104,33 +104,37 @@ function Home() {
   )
 }
 function Auth() {
-  const [isLoggingIn, setIsLoggingIn] = React.useState(false)
-  const [isLoggingOut, setIsLoggingOut] = React.useState(false)
-  const { mutate: logInMutation, status: logInStatus } = useMutation({
-    fn: logInWithGithub,
-    onSettled: () => {
-      // setIsLoggingIn(false)
+  const [isRedirecting, setIsRedirecting] = React.useState(false)
+  const logInServerFn = useServerFn(logInWithGithub)
+  const logInMutation = useMutation({
+    mutationFn: () => logInServerFn(),
+    onSuccess: (data) => {
+      setIsRedirecting(true)
+      window.location.href = data.to
+    },
+    onError: (error) => {
+      // TODO toast with error
+      console.error('onError', error)
     },
   })
+  const logoutServerFn = useServerFn(logout)
   const logOutMutation = useMutation({
-    fn: logout,
-    onSettled: () => {
-      setIsLoggingOut(false)
+    mutationFn: () => logoutServerFn(),
+    onError: (error) => {
+      // TODO toast with error
+      // Redirect is still returning an error??
+      // console.error('onError', error)
     },
   })
-  const { user, session } = Route.useRouteContext()
+  const { user } = Route.useRouteContext()
   return (
     <>
       {!user ? (
         <Button
-          disabled={logInStatus === 'pending' || isLoggingIn}
-          onClick={async () => {
-            setIsLoggingIn(true)
-            await logInMutation()
-          }}
+          disabled={logInMutation.isPending || isRedirecting}
+          onClick={() => logInMutation.mutate(undefined)}
         >
-          {}
-          {isLoggingIn ? (
+          {logInMutation.isPending || isRedirecting ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Github className="mr-2 h-4 w-4" />
@@ -139,15 +143,14 @@ function Auth() {
         </Button>
       ) : (
         <Button
-          disabled={logOutMutation.status === 'pending' || isLoggingOut}
+          disabled={logOutMutation.isPending}
           onClick={() => {
-            setIsLoggingOut(true)
-            logOutMutation.mutate()
+            logOutMutation.mutate(undefined)
           }}
         >
           {user ? (
             <>{user.name || user.email}</>
-          ) : isLoggingOut ? (
+          ) : logOutMutation.isPending ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}{' '}
           Logout

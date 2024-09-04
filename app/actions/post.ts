@@ -1,5 +1,5 @@
 import { CreatePostSchema, Post } from '@/db/schema/post'
-import { protectedAction, publicAction } from '@/trpc/init'
+import { protectedProcedure, publicProcedure } from '@/trpc/init'
 import { createServerFn } from '@tanstack/start'
 import { TRPCError } from '@trpc/server'
 import { and, eq } from 'drizzle-orm'
@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 export const byId = createServerFn(
   'GET',
-  publicAction.input(z.string()).query(async ({ input: postId, ctx }) => {
+  publicProcedure.input(z.string()).query(async ({ input: postId, ctx }) => {
     console.log(`Fetching post with id ${postId}...`)
 
     const post = await ctx.db.query.Post.findFirst({
@@ -20,7 +20,7 @@ export const byId = createServerFn(
 
 export const list = createServerFn(
   'GET',
-  publicAction.query(async ({ ctx }) => {
+  publicProcedure.query(async ({ ctx }) => {
     console.log('Fetching posts...')
     const posts = await ctx.db.query.Post.findMany({
       orderBy: (fields, { desc }) => desc(fields.createdAt),
@@ -35,30 +35,34 @@ export const list = createServerFn(
 
 export const remove = createServerFn(
   'POST',
-  protectedAction.input(z.string()).mutation(async ({ input: postId, ctx }) => {
-    console.log(`Deleting post with id ${postId}...`)
-    const post = await ctx.db.query.Post.findFirst({
-      where: (fields, { eq }) =>
-        and(eq(fields.id, postId), eq(fields.userId, ctx.auth.user.id)),
-    })
-    if (!post) throw new TRPCError({ code: 'NOT_FOUND' })
-    return await ctx.db
-      .delete(Post)
-      .where(and(eq(Post.id, postId), eq(Post.userId, ctx.auth.user.id)))
-      .returning({ postId: Post.id })
-  }),
+  protectedProcedure
+    .input(z.string())
+    .mutation(async ({ input: postId, ctx }) => {
+      console.log(`Deleting post with id ${postId}...`)
+      const post = await ctx.db.query.Post.findFirst({
+        where: (fields, { eq }) =>
+          and(eq(fields.id, postId), eq(fields.userId, ctx.auth.user.id)),
+      })
+      if (!post) throw new TRPCError({ code: 'NOT_FOUND' })
+      return await ctx.db
+        .delete(Post)
+        .where(and(eq(Post.id, postId), eq(Post.userId, ctx.auth.user.id)))
+        .returning({ postId: Post.id })
+    }),
 )
 
 export const create = createServerFn(
   'POST',
-  protectedAction.input(CreatePostSchema).mutation(async ({ input, ctx }) => {
-    console.log(`Creating post with title ${input.title}...`)
-    const post = await ctx.db.insert(Post).values({
-      title: input.title,
-      body: input.body,
-      userId: ctx.auth.user.id,
-    })
+  protectedProcedure
+    .input(CreatePostSchema)
+    .mutation(async ({ input, ctx }) => {
+      console.log(`Creating post with title ${input.title}...`)
+      const post = await ctx.db.insert(Post).values({
+        title: input.title,
+        body: input.body,
+        userId: ctx.auth.user.id,
+      })
 
-    return Number(post.lastInsertRowid)
-  }),
+      return Number(post.lastInsertRowid)
+    }),
 )

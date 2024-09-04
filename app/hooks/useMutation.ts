@@ -42,6 +42,7 @@ export function useBaseMutation<TVariables, TData, TError = Error>(
         setData(data)
         return data
       } catch (err: any) {
+        console.error(err)
         opts.onError?.({ variables, error: err })
         opts.onSettled?.({ variables, data: undefined, error: err })
         setStatus('error')
@@ -90,13 +91,13 @@ export function useMutation<TVariables, TData, TError = Error>(
         //   TODO better handle external redirects
         //   TODO why is redirect returned as an error
         console.log('ctx.error', ctx.error)
-        if (ctx.error?.to.includes('github.com')) {
-          // Handle external redirects
-          window.location.href = ctx.error.to
-          // window.location.replace(ctx.error.to)
-        } else {
-          router.navigate({ ...(ctx.error as any) })
-        }
+        // if (ctx.error?.to.includes('github.com')) {
+        // Handle external redirects
+        // window.location.href = ctx.error.to
+        // window.location.replace(ctx.error.to)
+        // } else {
+        // router.navigate({ ...(ctx.error as any) })
+        // }
       }
 
       // router.invalidate()
