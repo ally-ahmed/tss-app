@@ -25,7 +25,7 @@ import {
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, isRedirect } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/start'
 import { Github, Loader2, Trash } from 'lucide-react'
 import React from 'react'
@@ -116,16 +116,19 @@ function Auth() {
     },
     onError: (error) => {
       // TODO toast with error
-      console.error('onError', error)
+      // console.error('onError', error)
+      toast.error('Failed to login')
     },
   })
   const logoutServerFn = useServerFn(logout)
   const logOutMutation = useMutation({
     mutationFn: () => logoutServerFn(),
     onError: (error) => {
+      if (isRedirect(error)) {
+        setIsLogoutRedirect(true)
+      }
       // TODO toast with error
-      // Redirect is still returning an error even after using useServerFn??
-      setIsLogoutRedirect(true)
+      toast.error('Failed to logout')
       // console.error('onError', error)
     },
   })
@@ -146,14 +149,14 @@ function Auth() {
         </Button>
       ) : (
         <Button
-          disabled={logOutMutation.isPending}
+          disabled={logOutMutation.isPending || isLogoutRedirect}
           onClick={() => {
             logOutMutation.mutate(undefined)
           }}
         >
           {user ? (
             <>{user.name || user.email}</>
-          ) : logOutMutation.isPending ? (
+          ) : logOutMutation.isPending || isLogoutRedirect ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}{' '}
           Logout
