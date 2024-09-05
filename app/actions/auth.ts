@@ -1,4 +1,5 @@
 import { auth, github, lucia } from '@/auth'
+import { useStorage } from '@/lib/cache'
 import { redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { TRPCError } from '@trpc/server'
@@ -7,6 +8,7 @@ import { parseCookies, setCookie, setHeader } from 'vinxi/http'
 
 export const authLoader = createServerFn('GET', async () => {
   console.log('########### authLoader ###########')
+  await useStorage().removeItem('cache:nitro:functions:auth:.json')
   return await auth()
 })
 

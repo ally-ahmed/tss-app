@@ -8,6 +8,7 @@ import { generateSessionId, Lucia } from 'lucia'
 import { env } from '@/env'
 import type { DatabaseAdapter, SessionAndUser } from 'lucia'
 import { parseCookies, setCookie } from 'vinxi/http'
+import { cachedFunction } from '@/lib/cache'
 
 const adapter: DatabaseAdapter<SessionType, UserType> = {
   getSessionAndUser: async (
@@ -65,7 +66,7 @@ export function createSession(userId: string): SessionType {
   return session
 }
 
-export const auth = async () => {
+export const auth = cachedFunction(async () => {
   const sessionId = parseCookies()[lucia.sessionCookieName]
   console.log(`########### calling auth ${sessionId} ###########`)
   if (!sessionId) {
@@ -97,6 +98,6 @@ export const auth = async () => {
   return {
     ...result,
   }
-}
+})
 // export const authLoader = createServerFn('GET', async (_, { request }) => {})
 export type Auth = Awaited<ReturnType<typeof auth>>
