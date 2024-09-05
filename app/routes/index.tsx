@@ -146,7 +146,7 @@ function Auth() {
         </Button>
       ) : (
         <Button
-          disabled={logOutMutation.isPending || isLogoutRedirect}
+          disabled={logOutMutation.isPending}
           onClick={() => {
             logOutMutation.mutate(undefined)
           }}
