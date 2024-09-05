@@ -126,6 +126,7 @@ function Auth() {
     onError: (error) => {
       if (isRedirect(error)) {
         setIsLogoutRedirect(true)
+        return
       }
       // TODO toast with error
       toast.error('Failed to logout')
